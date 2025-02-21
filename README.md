@@ -4,12 +4,23 @@ Basketball Rotation Manager is a web application designed to help coaches manage
 
 ## Features
 
-- **Player Rotation Management**: Automatically rotates players on and off the court based on specified intervals.
-- **Playtime Tracking**: Accurately tracks and displays the playtime for each player.
-- **User-Friendly Interface**: Easy-to-use interface for setting up and managing rotations.
+- Player Rotation Management: Automatically rotates players on and off the court based on specified intervals.
+- Players names stored in local storage
+- Untick players to remove them from the rotation
+- Playtime Tracking: Accurately tracks and displays the playtime for each player.
+- User-Friendly Interface: Easy-to-use interface for setting up and managing rotations.
+
+## Live Build
+
+https://tallday.github.io/Basketball-Sub-Planner/
 
 ## Screenshot
 ![Substitution Planner Screenshot](./subPlanner.png)
+
+## Known Limitations
+- Only 10 players can be added
+- Assumes match is 40 minutes long with two halves
+
 
 ## Installation
 
