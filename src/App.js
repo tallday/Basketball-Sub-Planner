@@ -22,8 +22,9 @@ const SubstitutionApp = () => {
   const [rotations, setRotations] = useState([]);
   const [playtimeSummary, setPlaytimeSummary] = useState({});
   const [isExpanded, setIsExpanded] = useState(false);
+  const [message, setMessage] = useState("");
   const maxOnCourt = 5;
-//  const halfTime = 20;
+  //  const halfTime = 20;
   const totalGameTime = 40; // Define totalGameTime here
 
   useEffect(() => {
@@ -69,7 +70,10 @@ const SubstitutionApp = () => {
   const generateSubstitutions = () => {
     const activePlayers = players.filter(player => checkedPlayers[player]);
     if (activePlayers.length < 5) {
-      alert("You need at least 5 players to generate a fair substitution plan.");
+      setRotations([]);
+      setPlaytimeSummary([]);
+      setIsExpanded(true);
+      setMessage("You need at least 5 players to generate a fair substitution plan.");
       return;
     }
 
@@ -77,8 +81,11 @@ const SubstitutionApp = () => {
       setRotations([]);
       setPlaytimeSummary([]);
       setIsExpanded(true);
+      setMessage("No subs required");
       return;
     }
+
+    setMessage("");
 
     const totalPlayers = activePlayers.length;
     const playersActive = maxOnCourt; // Number of players on the court
@@ -161,32 +168,31 @@ const SubstitutionApp = () => {
               <tbody>
                 {rotations.map((r, index) => (
                   <>
-                    {index === Math.floor(rotations.length / 2) && (
-                      <tr className="bg-gray-100">
-                        <td colSpan="3" className={`border border-gray-300 p-2 text-center font-bold`}>                          
-                            Half Time                          
-                        </td>
-                      </tr>
-                    )}
                     <tr key={index} className="text-center">
-                      <td className="border border-gray-300 p-2">{r.periodClock}</td>
+                      <td className="border border-gray-300 p-2">{index === 0 ? "20:00" : rotations[index - 1].periodClock}</td>
                       <td className="border border-gray-300 p-2 text-left">
-                        <ul className="list-disc list-inside">
-                          {[...r.court].sort().map((player, i) => (
+                        <ul className="list-disc pl-4">
+                          {r.court.sort().map((player, i) => (
                             <li key={i}>{player}</li>
                           ))}
                         </ul>
                       </td>
                       <td className="border border-gray-300 p-2 font-bold text-red-600 text-left">
-                        <ul className="list-disc list-inside">
-                          {[...r.bench].sort().map((player, i) => (
+                        <ul className="list-disc pl-4">
+                          {r.bench.sort().map((player, i) => (
                             <li key={i}>{player}</li>
                           ))}
                         </ul>
                       </td>
                     </tr>
-                  </>
-                ))}
+                    {index === Math.floor(rotations.length / 2) && (
+                      <tr className="bg-gray-100">
+                        <td colSpan="3" className="border border-gray-300 p-2 text-center font-bold">
+                          Half Time
+                        </td>
+                      </tr>
+                    )}
+                  </>))}
               </tbody>
             </table>
             <h2 className="text-lg font-bold mt-4">Playtime Summary</h2>
@@ -211,13 +217,15 @@ const SubstitutionApp = () => {
           </div>
         ) : (
           <div className="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative text-center" role="alert">
-            <span className="block sm:inline">No subs required</span>
+      
+            {message && (
+              <span>
+          {message}
+          </span>
+      )}
           </div>
         )}
       </div>
-
-
-      
 
       <div className="flex space-x-2">
         <button onClick={generateSubstitutions} className="bg-green-500 text-white p-2 rounded flex-1">
