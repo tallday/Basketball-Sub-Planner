@@ -73,6 +73,13 @@ const SubstitutionApp = () => {
       return;
     }
 
+    if (activePlayers.length === 5) {
+      setRotations([]);
+      setPlaytimeSummary([]);
+      setIsExpanded(true);
+      return;
+    }
+
     const totalPlayers = activePlayers.length;
     const playersActive = maxOnCourt; // Number of players on the court
     const targetMinutes = (totalGameTime * playersActive) / totalPlayers;
@@ -125,10 +132,13 @@ const SubstitutionApp = () => {
     const averagePlaytime = totalPlaytime / activePlayers.length;
     console.log(`Total Playtime: ${totalPlaytime} minutes`);
     console.log(`Average Playtime per Player: ${averagePlaytime.toFixed(1)} minutes`);
+
+    // Scroll to the top of the page
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   return (
-    <div className="p-6 max-w-3xl mx-auto bg-white bg-opacity-95 rounded-xl shadow-md space-y-4">
+    <div className="p-6 max-w-3xl mx-auto bg-white/90 rounded-xl shadow-md space-y-4 min-h-screen">
       <h1 className="text-xl font-bold text-center flex items-center justify-center">
         <i className="fas fa-basketball-ball text-orange-500 mr-2"></i> {/* Basketball icon */}
         Basketball Substitution Planner
@@ -136,14 +146,13 @@ const SubstitutionApp = () => {
 
       
 
-      <div className={`transition-max-height duration-500 ease-in-out overflow-hidden ${isExpanded ? 'max-h-screen' : 'max-h-0'}`}>
-        {rotations.length > 0 && (
+      <div className={`transition-max-height duration-500 ease-in-out overflow-hidden ${isExpanded ? 'max-h-[2000px]' : 'max-h-0'}`}>
+        {rotations.length > 0 ? (
           <div>
             <h2 className="text-lg font-bold mt-4">Substitutions</h2>
             <table className="w-full border-collapse border border-gray-300 mt-2">
               <thead>
                 <tr className="bg-gray-200">
-                  <th className="border border-gray-300 p-2">Minutes</th>
                   <th className="border border-gray-300 p-2">Period Clock</th>
                   <th className="border border-gray-300 p-2">On Court</th>
                   <th className="border border-gray-300 p-2">Bench</th>
@@ -154,18 +163,27 @@ const SubstitutionApp = () => {
                   <>
                     {index === Math.floor(rotations.length / 2) && (
                       <tr className="bg-gray-100">
-                        <td colSpan="4" className="border border-gray-300 p-2 text-center font-bold">Half Time</td>
+                        <td colSpan="3" className={`border border-gray-300 p-2 text-center font-bold`}>                          
+                            Half Time                          
+                        </td>
                       </tr>
                     )}
                     <tr key={index} className="text-center">
-                      <td className="border border-gray-300 p-2">
-                        {index < Math.floor(rotations.length / 2)
-                          ? `${formatTime(20 - (totalGameTime - parseFloat(r.time.split(' - ')[0])))} - ${formatTime(20 - (totalGameTime - parseFloat(r.time.split(' - ')[1])))}`
-                          : r.time}
-                      </td>
                       <td className="border border-gray-300 p-2">{r.periodClock}</td>
-                      <td className="border border-gray-300 p-2">{r.court.join(", ")}</td>
-                      <td className="border border-gray-300 p-2 font-bold text-red-600">{r.bench.join(", ")}</td>
+                      <td className="border border-gray-300 p-2 text-left">
+                        <ul className="list-disc list-inside">
+                          {[...r.court].sort().map((player, i) => (
+                            <li key={i}>{player}</li>
+                          ))}
+                        </ul>
+                      </td>
+                      <td className="border border-gray-300 p-2 font-bold text-red-600 text-left">
+                        <ul className="list-disc list-inside">
+                          {[...r.bench].sort().map((player, i) => (
+                            <li key={i}>{player}</li>
+                          ))}
+                        </ul>
+                      </td>
                     </tr>
                   </>
                 ))}
@@ -190,6 +208,10 @@ const SubstitutionApp = () => {
                   ))}
               </tbody>
             </table>
+          </div>
+        ) : (
+          <div className="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative text-center" role="alert">
+            <span className="block sm:inline">No subs required</span>
           </div>
         )}
       </div>
