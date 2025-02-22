@@ -189,7 +189,7 @@ const SubstitutionApp = () => {
                     {index === Math.floor(rotations.length / 2) && (
                       <tr className="bg-gray-100">
                         <td colSpan="3" className="border border-gray-300 p-2 text-center font-bold">
-                          Half Time
+                          {rotations[index-1].periodClock !== "0:00" ? <span className="text-yellow-600">Half Time - No Subs</span> : "Half Time"}
                         </td>
                       </tr>
                     )}
