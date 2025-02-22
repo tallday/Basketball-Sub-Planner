@@ -1,7 +1,7 @@
 {
   "files": {
-    "main.css": "/Basketball-Sub-Planner/static/css/main.7f790a37.css",
-    "main.js": "/Basketball-Sub-Planner/static/js/main.2b0c5a87.js",
+    "main.css": "/Basketball-Sub-Planner/static/css/main.2d04e7a7.css",
+    "main.js": "/Basketball-Sub-Planner/static/js/main.4222eeb8.js",
     "static/js/453.ed3810f9.chunk.js": "/Basketball-Sub-Planner/static/js/453.ed3810f9.chunk.js",
     "static/media/fa-solid-900.ttf": "/Basketball-Sub-Planner/static/media/fa-solid-900.2582b0e4bcf85eceead0.ttf",
     "static/media/fa-brands-400.ttf": "/Basketball-Sub-Planner/static/media/fa-brands-400.1815e00441357e01619e.ttf",
@@ -13,12 +13,12 @@
     "static/media/fa-v4compatibility.ttf": "/Basketball-Sub-Planner/static/media/fa-v4compatibility.da94ef451f4969af06e6.ttf",
     "static/media/fa-v4compatibility.woff2": "/Basketball-Sub-Planner/static/media/fa-v4compatibility.ea8f94e1d22e0d35ccd4.woff2",
     "index.html": "/Basketball-Sub-Planner/index.html",
-    "main.7f790a37.css.map": "/Basketball-Sub-Planner/static/css/main.7f790a37.css.map",
-    "main.2b0c5a87.js.map": "/Basketball-Sub-Planner/static/js/main.2b0c5a87.js.map",
+    "main.2d04e7a7.css.map": "/Basketball-Sub-Planner/static/css/main.2d04e7a7.css.map",
+    "main.4222eeb8.js.map": "/Basketball-Sub-Planner/static/js/main.4222eeb8.js.map",
     "453.ed3810f9.chunk.js.map": "/Basketball-Sub-Planner/static/js/453.ed3810f9.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.7f790a37.css",
-    "static/js/main.2b0c5a87.js"
+    "static/css/main.2d04e7a7.css",
+    "static/js/main.4222eeb8.js"
   ]
 }
