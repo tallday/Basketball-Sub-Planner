@@ -23,7 +23,7 @@ const SubstitutionApp = () => {
   const [playtimeSummary, setPlaytimeSummary] = useState({});
   const [isExpanded, setIsExpanded] = useState(false);
   const maxOnCourt = 5;
-  const halfTime = 20;
+//  const halfTime = 20;
   const totalGameTime = 40; // Define totalGameTime here
 
   useEffect(() => {
