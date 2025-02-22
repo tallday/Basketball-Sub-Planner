@@ -64,7 +64,8 @@ const SubstitutionApp = () => {
 
   const shufflePlayers = () => {
     const shuffled = [...players].sort(() => Math.random() - 0.5);
-    setPlayers(shuffled);
+    setPlayers(shuffled);    
+    generateSubstitutions();
   };
 
   const generateSubstitutions = () => {
