@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
 import './index.css';
+import '@fortawesome/fontawesome-free/css/all.min.css';
+
 
 export const plugins = {
   tailwindcss: {},
@@ -17,15 +19,29 @@ const SubstitutionApp = () => {
     return storedChecked ? JSON.parse(storedChecked) : players.reduce((acc, player) => ({ ...acc, [player]: true }), {});
   });
   const [newPlayer, setNewPlayer] = useState("");
-  const [rotations, setRotations] = useState({ firstHalf: [], secondHalf: [] });
+  const [rotations, setRotations] = useState([]);
   const [playtimeSummary, setPlaytimeSummary] = useState({});
+  const [isExpanded, setIsExpanded] = useState(false);
   const maxOnCourt = 5;
   const halfTime = 20;
+  const totalGameTime = 40; // Define totalGameTime here
 
   useEffect(() => {
     localStorage.setItem('players', JSON.stringify(players));
     localStorage.setItem('checkedPlayers', JSON.stringify(checkedPlayers));
   }, [players, checkedPlayers]);
+
+  const formatTime = (minutes) => {
+    const wholeMinutes = Math.floor(minutes);
+    const seconds = Math.round((minutes - wholeMinutes) * 60);
+    return `${wholeMinutes}:${seconds.toString().padStart(2, '0')}`;
+  };
+
+  const formatPlaytime = (minutes) => {
+    const wholeMinutes = Math.floor(minutes);
+    const seconds = Math.round((minutes - wholeMinutes) * 60);
+    return `${wholeMinutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+  };
 
   const addPlayer = () => {
     if (newPlayer && !players.includes(newPlayer) && players.length < 10) {
@@ -59,15 +75,13 @@ const SubstitutionApp = () => {
 
     const totalPlayers = activePlayers.length;
     const playersActive = maxOnCourt; // Number of players on the court
-    const totalGameTime = 2 * halfTime; // Total game time for both halves
     const targetMinutes = (totalGameTime * playersActive) / totalPlayers;
-    let rotationDuration = Math.round(targetMinutes / playersActive); // Round to nearest whole minute
+    const rotationDuration = targetMinutes / playersActive; // Use floating-point for more precision
     const rotationsCount = Math.ceil(totalGameTime / rotationDuration);
-    rotationDuration = Math.round(totalGameTime / rotationsCount); // Ensure even minute intervals
 
     let currentIndex = 0;
     const playtimeTracker = new Array(totalPlayers).fill(0);
-    let newRotations = { firstHalf: [], secondHalf: [] };
+    let newRotations = [];
 
     const rotatePlayers = (startTime, endTime) => {
       const onField = [];
@@ -81,38 +95,32 @@ const SubstitutionApp = () => {
       return { onField, bench };
     };
 
-    const formatTime = (minutes) => {
-      const wholeMinutes = Math.floor(minutes);
-      return `${wholeMinutes}:00`;
-    };
+    for (let i = 0; i < rotationsCount; i++) {
+      const startTime = i * rotationDuration;
+      const endTime = (i + 1) * rotationDuration;
+      const { onField, bench } = rotatePlayers(startTime, endTime);
 
-    // First Half
-    for (let i = 0; i < rotationsCount / 2; i++) {
-      const startTime = halfTime - i * rotationDuration; // Count down from 20
-      const endTime = halfTime - (i + 1) * rotationDuration; // Count down to 0
-      const { onField, bench } = rotatePlayers(endTime, startTime); // Swap startTime and endTime
-      newRotations.firstHalf.push({ time: `${formatTime(startTime)}`, court: onField, bench });
-    }
+      const periodClockTime = endTime <= 20 ? 20 - endTime : 40 - endTime;
+      const periodClock = i === rotationsCount - 1 ? "" : formatTime(periodClockTime);
 
-    // Second Half
-    for (let i = 0; i < rotationsCount / 2; i++) {
-      const startTime = totalGameTime - i * rotationDuration; // Count down from 40
-      const endTime = totalGameTime - (i + 1) * rotationDuration; // Count down to 20
-      const { onField, bench } = rotatePlayers(endTime, startTime); // Swap startTime and endTime
-      newRotations.secondHalf.push({ time: `${formatTime(startTime - halfTime)}`, court: onField, bench });
+      newRotations.push({
+        time: `${formatTime(totalGameTime - startTime)} - ${formatTime(totalGameTime - endTime)}`,
+        periodClock,
+        court: onField,
+        bench
+      });
     }
 
     setRotations(newRotations);
 
-    // Create playtime summary with player names
     const playtimeSummary = activePlayers.map((player, index) => ({
       name: player,
-      minutes: Math.max(0, playtimeTracker[index]).toFixed(1) // Ensure positive playtime
+      minutes: formatPlaytime(playtimeTracker[index])
     }));
 
     setPlaytimeSummary(playtimeSummary);
+    setIsExpanded(true);
 
-    // Calculate total and average playtime
     const totalPlaytime = playtimeTracker.reduce((acc, minutes) => acc + minutes, 0);
     const averagePlaytime = totalPlaytime / activePlayers.length;
     console.log(`Total Playtime: ${totalPlaytime} minutes`);
@@ -120,22 +128,80 @@ const SubstitutionApp = () => {
   };
 
   return (
-    <div className="p-6 max-w-3xl mx-auto bg-white rounded-xl shadow-md space-y-4">
-      <h1 className="text-xl font-bold text-center">Basketball Substitution Planner</h1>
-      <div className="flex space-x-2 mb-4">
-        <input 
-          type="text" 
-          value={newPlayer} 
-          onChange={(e) => setNewPlayer(e.target.value)}
-          onKeyDown={(e) => {
-            if (e.key === 'Enter') {
-              addPlayer();
-            }
-          }}
-          className="border p-2 w-full" 
-          placeholder="Enter player name"
-        />
-        <button onClick={addPlayer} className="bg-blue-500 text-white p-2 rounded">Add</button>
+    <div className="p-6 max-w-3xl mx-auto bg-white bg-opacity-95 rounded-xl shadow-md space-y-4">
+      <h1 className="text-xl font-bold text-center flex items-center justify-center">
+        <i className="fas fa-basketball-ball text-orange-500 mr-2"></i> {/* Basketball icon */}
+        Basketball Substitution Planner
+      </h1>
+
+      
+
+      <div className={`transition-max-height duration-500 ease-in-out overflow-hidden ${isExpanded ? 'max-h-screen' : 'max-h-0'}`}>
+        {rotations.length > 0 && (
+          <div>
+            <h2 className="text-lg font-bold mt-4">Substitutions</h2>
+            <table className="w-full border-collapse border border-gray-300 mt-2">
+              <thead>
+                <tr className="bg-gray-200">
+                  <th className="border border-gray-300 p-2">Minutes</th>
+                  <th className="border border-gray-300 p-2">Period Clock</th>
+                  <th className="border border-gray-300 p-2">On Court</th>
+                  <th className="border border-gray-300 p-2">Bench</th>
+                </tr>
+              </thead>
+              <tbody>
+                {rotations.map((r, index) => (
+                  <>
+                    {index === Math.floor(rotations.length / 2) && (
+                      <tr className="bg-gray-100">
+                        <td colSpan="4" className="border border-gray-300 p-2 text-center font-bold">Half Time</td>
+                      </tr>
+                    )}
+                    <tr key={index} className="text-center">
+                      <td className="border border-gray-300 p-2">
+                        {index < Math.floor(rotations.length / 2)
+                          ? `${formatTime(20 - (totalGameTime - parseFloat(r.time.split(' - ')[0])))} - ${formatTime(20 - (totalGameTime - parseFloat(r.time.split(' - ')[1])))}`
+                          : r.time}
+                      </td>
+                      <td className="border border-gray-300 p-2">{r.periodClock}</td>
+                      <td className="border border-gray-300 p-2">{r.court.join(", ")}</td>
+                      <td className="border border-gray-300 p-2 font-bold text-red-600">{r.bench.join(", ")}</td>
+                    </tr>
+                  </>
+                ))}
+              </tbody>
+            </table>
+            <h2 className="text-lg font-bold mt-4">Playtime Summary</h2>
+            <table className="w-full border-collapse border border-gray-300 mt-2">
+              <thead>
+                <tr className="bg-gray-200">
+                  <th className="border border-gray-300 p-2">Player Name</th>
+                  <th className="border border-gray-300 p-2">Minutes Played</th>
+                </tr>
+              </thead>
+              <tbody>
+                {playtimeSummary
+                  .sort((a, b) => a.name.localeCompare(b.name))
+                  .map((summary, index) => (
+                    <tr key={index} className="text-center">
+                      <td className="border border-gray-300 p-2">{summary.name}</td>
+                      <td className="border border-gray-300 p-2">{summary.minutes}</td>
+                    </tr>
+                  ))}
+              </tbody>
+            </table>
+          </div>
+        )}
+      </div>
+
+
+      
+
+      <div className="flex space-x-2">
+        <button onClick={generateSubstitutions} className="bg-green-500 text-white p-2 rounded flex-1">
+          {rotations.length > 0 ? "Regenerate" : "Generate"} Substitutions
+        </button>
+        <button onClick={shufflePlayers} className="bg-yellow-500 text-white p-2 rounded flex-1">Randomize List Order</button>
       </div>
       <ul className="mb-4">
         {players.map(player => (
@@ -153,74 +219,21 @@ const SubstitutionApp = () => {
           </li>
         ))}
       </ul>
-      
-      <div className="flex space-x-2">
-        <button onClick={generateSubstitutions} className="bg-green-500 text-white p-2 rounded flex-1">Generate Substitutions</button>
-        <button onClick={shufflePlayers} className="bg-yellow-500 text-white p-2 rounded flex-1">Randomize List Order</button>
+      <div className="flex space-x-2 mb-4">
+        <input
+          type="text"
+          value={newPlayer}
+          onChange={(e) => setNewPlayer(e.target.value)}
+          onKeyDown={(e) => {
+            if (e.key === 'Enter') {
+              addPlayer();
+            }
+          }}
+          className="border p-2 w-full"
+          placeholder="Enter player name"
+        />
+        <button onClick={addPlayer} className="bg-blue-500 text-white p-2 rounded">Add</button>
       </div>
-      
-      {rotations.firstHalf.length > 0 && (
-        <div>
-          <h2 className="text-lg font-bold mt-4">First Half</h2>
-          <table className="w-full border-collapse border border-gray-300 mt-2">
-            <thead>
-              <tr className="bg-gray-200">
-                <th className="border border-gray-300 p-2">Time Clock</th>
-                <th className="border border-gray-300 p-2">On Court</th>
-                <th className="border border-gray-300 p-2">Bench</th>
-              </tr>
-            </thead>
-            <tbody>
-              {rotations.firstHalf.map((r, index) => (
-                <tr key={index} className="text-center">
-                  <td className="border border-gray-300 p-2">{r.time}</td>
-                  <td className="border border-gray-300 p-2">{r.court.join(", ")}</td>
-                  <td className="border border-gray-300 p-2 font-bold text-red-600">{r.bench.join(", ")}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-          
-          <h2 className="text-lg font-bold mt-4">Second Half</h2>
-          <table className="w-full border-collapse border border-gray-300 mt-2">
-            <thead>
-              <tr className="bg-gray-200">
-                <th className="border border-gray-300 p-2">Time Clock</th>
-                <th className="border border-gray-300 p-2">On Court</th>
-                <th className="border border-gray-300 p-2">Bench</th>
-              </tr>
-            </thead>
-            <tbody>
-              {rotations.secondHalf.map((r, index) => (
-                <tr key={index} className="text-center">
-                  <td className="border border-gray-300 p-2">{r.time}</td>
-                  <td className="border border-gray-300 p-2">{r.court.join(", ")}</td>
-                  <td className="border border-gray-300 p-2 font-bold text-red-600">{r.bench.join(", ")}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-          <h2 className="text-lg font-bold mt-4">Playtime Summary</h2>
-          <table className="w-full border-collapse border border-gray-300 mt-2">
-            <thead>
-              <tr className="bg-gray-200">
-                <th className="border border-gray-300 p-2">Player Name</th>
-                <th className="border border-gray-300 p-2">Minutes Played</th>
-              </tr>
-            </thead>
-            <tbody>
-              {playtimeSummary
-                .sort((a, b) => a.name.localeCompare(b.name))
-                .map((summary, index) => (
-                  <tr key={index} className="text-center">
-                    <td className="border border-gray-300 p-2">{summary.name}</td>
-                    <td className="border border-gray-300 p-2">{summary.minutes}</td>
-                  </tr>
-                ))}
-            </tbody>
-          </table>
-        </div>
-      )}
     </div>
   );
 };
