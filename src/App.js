@@ -27,6 +27,8 @@ const SubstitutionApp = () => {
   //  const halfTime = 20;
   const totalGameTime = 40; // Define totalGameTime here
 
+  const totalSelectedPlayers = Object.values(checkedPlayers).filter(Boolean).length;
+
   useEffect(() => {
     localStorage.setItem('players', JSON.stringify(players));
     localStorage.setItem('checkedPlayers', JSON.stringify(checkedPlayers));
@@ -169,8 +171,17 @@ const SubstitutionApp = () => {
               <tbody>
                 {rotations.map((r, index) => (
                   <>
+                    {index === Math.floor(rotations.length / 2) && index > 0 && rotations[index - 1].periodClock === "0:00" && (
+                      <tr className="bg-gray-200">
+                        <td colSpan="3" className="border border-gray-300 p-2 text-center font-bold">
+                          Half Time
+                        </td>
+                      </tr>
+                    )}
                     <tr key={index} className="text-center">
-                      <td className="border border-gray-300 p-2">{index === 0 ? "20:00" : rotations[index - 1].periodClock}</td>
+                      <td className="border border-gray-300 p-2">
+                        {index === 0 ? "Starting Lineup" : rotations[index - 1].periodClock !== "0:00" ? rotations[index - 1].periodClock : "Starting Lineup"}
+                      </td>
                       <td className="border border-gray-300 p-2 text-left">
                         <ul className="list-disc pl-4">
                           {r.court.sort().map((player, i) => (
@@ -186,14 +197,15 @@ const SubstitutionApp = () => {
                         </ul>
                       </td>
                     </tr>
-                    {index === Math.floor(rotations.length / 2) && (
-                      <tr className="bg-gray-100">
+                    {index === Math.floor(rotations.length / 2) && index > 0 && rotations[index - 1].periodClock !== "0:00" && (
+                      <tr className="bg-gray-200">
                         <td colSpan="3" className="border border-gray-300 p-2 text-center font-bold">
-                          {rotations[index-1].periodClock !== "0:00" ? <span className="text-yellow-600">Half Time - No Subs</span> : "Half Time"}
+                          {rotations[index].periodClock !== "0:00" ? <span>Half Time - <span className="text-yellow-600">No Subs</span></span> : "Half Time"}
                         </td>
                       </tr>
                     )}
-                  </>))}
+                  </>
+                ))}
               </tbody>
             </table>
             <h2 className="text-lg font-bold mt-4">Playtime Summary</h2>
@@ -233,6 +245,9 @@ const SubstitutionApp = () => {
           {rotations.length > 0 ? "Regenerate" : "Generate"} Substitutions
         </button>
         <button onClick={shufflePlayers} className="bg-yellow-500 text-white p-2 rounded flex-1">Randomize List Order</button>
+      </div>
+      <div className="text-center font-bold">
+        Active Players: {totalSelectedPlayers}
       </div>
       <ul className="mb-4">
         {players.map(player => (
