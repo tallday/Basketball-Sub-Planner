@@ -1,15 +1,24 @@
 {
   "files": {
-    "main.css": "/Basketball-Sub-Planner/static/css/main.8ccdfed8.css",
-    "main.js": "/Basketball-Sub-Planner/static/js/main.5b625548.js",
+    "main.css": "/Basketball-Sub-Planner/static/css/main.8f0dadeb.css",
+    "main.js": "/Basketball-Sub-Planner/static/js/main.7ef13777.js",
     "static/js/453.ed3810f9.chunk.js": "/Basketball-Sub-Planner/static/js/453.ed3810f9.chunk.js",
+    "static/media/fa-solid-900.ttf": "/Basketball-Sub-Planner/static/media/fa-solid-900.2582b0e4bcf85eceead0.ttf",
+    "static/media/fa-brands-400.ttf": "/Basketball-Sub-Planner/static/media/fa-brands-400.1815e00441357e01619e.ttf",
+    "static/media/background.jpg": "/Basketball-Sub-Planner/static/media/background.b068eeaa64b92f275205.jpg",
+    "static/media/fa-solid-900.woff2": "/Basketball-Sub-Planner/static/media/fa-solid-900.2463b90d9a316e4e5294.woff2",
+    "static/media/fa-brands-400.woff2": "/Basketball-Sub-Planner/static/media/fa-brands-400.c210719e60948b211a12.woff2",
+    "static/media/fa-regular-400.ttf": "/Basketball-Sub-Planner/static/media/fa-regular-400.914997e1bdfc990d0897.ttf",
+    "static/media/fa-regular-400.woff2": "/Basketball-Sub-Planner/static/media/fa-regular-400.89999bdf5d835c012025.woff2",
+    "static/media/fa-v4compatibility.ttf": "/Basketball-Sub-Planner/static/media/fa-v4compatibility.da94ef451f4969af06e6.ttf",
+    "static/media/fa-v4compatibility.woff2": "/Basketball-Sub-Planner/static/media/fa-v4compatibility.ea8f94e1d22e0d35ccd4.woff2",
     "index.html": "/Basketball-Sub-Planner/index.html",
-    "main.8ccdfed8.css.map": "/Basketball-Sub-Planner/static/css/main.8ccdfed8.css.map",
-    "main.5b625548.js.map": "/Basketball-Sub-Planner/static/js/main.5b625548.js.map",
+    "main.8f0dadeb.css.map": "/Basketball-Sub-Planner/static/css/main.8f0dadeb.css.map",
+    "main.7ef13777.js.map": "/Basketball-Sub-Planner/static/js/main.7ef13777.js.map",
     "453.ed3810f9.chunk.js.map": "/Basketball-Sub-Planner/static/js/453.ed3810f9.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.8ccdfed8.css",
-    "static/js/main.5b625548.js"
+    "static/css/main.8f0dadeb.css",
+    "static/js/main.7ef13777.js"
   ]
 }
