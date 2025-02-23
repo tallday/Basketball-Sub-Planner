@@ -26,6 +26,7 @@ const SubstitutionApp = () => {
   const maxOnCourt = 5;
   //  const halfTime = 20;
   const totalGameTime = 40; // Define totalGameTime here
+  const [hasGenerated, setHasGenerated] = useState(false);
 
   const totalSelectedPlayers = Object.values(checkedPlayers).filter(Boolean).length;
 
@@ -145,6 +146,7 @@ const SubstitutionApp = () => {
 
     // Scroll to the top of the page
     window.scrollTo({ top: 0, behavior: 'smooth' });
+    setHasGenerated(true);
   };
 
   return (
@@ -241,10 +243,15 @@ const SubstitutionApp = () => {
       </div>
 
       <div className="flex space-x-2">
-        <button onClick={generateSubstitutions} className="bg-green-500 text-white p-2 rounded flex-1">
-          {rotations.length > 0 ? "Regenerate" : "Generate"} Substitutions
-        </button>
-        <button onClick={shufflePlayers} className="bg-yellow-500 text-white p-2 rounded flex-1">Randomize List Order</button>
+        {!hasGenerated ? (
+          <button onClick={generateSubstitutions} className="bg-green-500 text-white p-2 rounded flex-1">
+            <i className="fas fa-play mr-1"></i> Generate Substitutions
+          </button>
+        ) : (
+          <button onClick={shufflePlayers} className="bg-green-500 text-white p-2 rounded flex-1">
+            <i className="fas fa-sync-alt mr-1"></i> Randomise & Regenerate
+          </button>
+        )}
       </div>
       <div className="text-center font-bold">
         Active Players: {totalSelectedPlayers}
