@@ -1,7 +1,11 @@
 import React, { useState, useEffect } from "react";
 import './index.css';
 import '@fortawesome/fontawesome-free/css/all.min.css';
+import ReactGA from 'react-ga4'; // Import Google Analytics
 
+// Initialize Google Analytics
+// Replace G-XXXXXXXXXX with your actual Google Analytics measurement ID
+ReactGA.initialize('G-3386T4N45T');
 
 export const plugins = {
   tailwindcss: {},
@@ -35,6 +39,20 @@ const SubstitutionApp = () => {
     localStorage.setItem('checkedPlayers', JSON.stringify(checkedPlayers));
   }, [players, checkedPlayers]);
 
+  // Track page view when component mounts
+  useEffect(() => {
+    ReactGA.send({ hitType: "pageview", page: window.location.pathname });
+  }, []);
+
+  // Track events function
+  const trackEvent = (category, action, label) => {
+    ReactGA.event({
+      category,
+      action,
+      label
+    });
+  };
+
   const formatTime = (minutes) => {
     const wholeMinutes = Math.floor(minutes);
     const seconds = Math.round((minutes - wholeMinutes) * 60);
@@ -49,6 +67,7 @@ const SubstitutionApp = () => {
 
   const addPlayer = () => {
     if (newPlayer && !players.includes(newPlayer) && players.length < 10) {
+      trackEvent('User Action', 'Add Player', newPlayer);
       setPlayers([...players, newPlayer]);
       setCheckedPlayers({ ...checkedPlayers, [newPlayer]: true });
       setNewPlayer("");
@@ -56,22 +75,32 @@ const SubstitutionApp = () => {
   };
 
   const removePlayer = (player) => {
+    trackEvent('User Action', 'Remove Player', player);
     setPlayers(players.filter(p => p !== player));
     const { [player]: _, ...rest } = checkedPlayers;
     setCheckedPlayers(rest);
   };
 
   const togglePlayerCheck = (player) => {
+    trackEvent('User Action', 'Toggle Player', `${player}: ${!checkedPlayers[player]}`);
     setCheckedPlayers({ ...checkedPlayers, [player]: !checkedPlayers[player] });
   };
 
   const shufflePlayers = () => {
-    const shuffled = [...players].sort(() => Math.random() - 0.5);
-    setPlayers(shuffled);    
-    generateSubstitutions();
+    if (window.confirm('Are you sure you want to shuffle the players and regenerate substitutions?')) {
+      trackEvent('User Action', 'Shuffle Players', `Player Count: ${totalSelectedPlayers}`);
+      const shuffled = [...players].sort(() => Math.random() - 0.5);
+      setPlayers(shuffled);    
+      generateSubstitutions();
+    }
   };
 
+
+  
+
   const generateSubstitutions = () => {
+    trackEvent('User Action', 'Generate Substitutions', `Player Count: ${totalSelectedPlayers}`);
+    
     const activePlayers = players.filter(player => checkedPlayers[player]);
     if (activePlayers.length < 5) {
       setRotations([]);
@@ -155,8 +184,8 @@ const SubstitutionApp = () => {
         <i className="fas fa-basketball-ball text-orange-500 mr-2"></i> {/* Basketball icon */}
         Basketball Substitution Planner
       </h1>
-
       
+   
 
       <div className={`transition-max-height duration-500 ease-in-out overflow-hidden ${isExpanded ? 'max-h-[2000px]' : 'max-h-0'}`}>
         {rotations.length > 0 ? (
@@ -286,6 +315,17 @@ const SubstitutionApp = () => {
           placeholder="Enter player name"
         />
         <button onClick={addPlayer} className="bg-blue-500 text-white p-2 rounded">Add</button>
+      </div>
+<hr />
+      <div className="text-right">
+        <a 
+          href="https://github.com/tallday/Basketball-Sub-Planner/issues/new" 
+          target="_blank" 
+          rel="noopener noreferrer"
+          className="text-sm text-blue-600 hover:text-blue-800"
+        >
+          <i className="fas fa-comment-alt mr-1"></i> Provide Feedback
+        </a>
       </div>
     </div>
   );
