@@ -1,0 +1,7 @@
+mobile/dist/
+mobile/node_modules/
+node_modules/
+dist/
+.claude/settings.local.json
+mobile/.expo/README.md
+mobile/bballsubs-b59324d036dd.json

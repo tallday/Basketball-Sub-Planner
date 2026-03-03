@@ -4,81 +4,174 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>B-Ball Subs - Support</title>
+    <link rel="icon" href="favicon.png">
     <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            max-width: 700px;
-            margin: 0 auto;
-            padding: 24px;
+            background: linear-gradient(135deg, #1A4884 0%, #0d2847 100%);
+            min-height: 100vh;
             color: #1f2937;
             line-height: 1.6;
         }
+        .header {
+            background: #1A4884;
+            padding: 20px 24px;
+            text-align: center;
+        }
+        .header a {
+            display: inline-flex;
+            align-items: center;
+            text-decoration: none;
+            color: #ffffff;
+            gap: 10px;
+        }
+        .header img {
+            width: 32px;
+            height: 32px;
+            border-radius: 6px;
+        }
+        .header span {
+            font-size: 18px;
+            font-weight: 700;
+        }
+        .content {
+            max-width: 700px;
+            margin: 24px auto;
+            background: #ffffff;
+            border-radius: 16px;
+            padding: 40px 32px;
+            box-shadow: 0 4px 24px rgba(0, 0, 0, 0.15);
+        }
         h1 {
             color: #1A4884;
-            font-size: 24px;
+            font-size: 26px;
+            margin-bottom: 16px;
         }
         h2 {
             color: #1A4884;
-            font-size: 18px;
-            margin-top: 32px;
+            font-size: 17px;
+            margin-top: 28px;
+            margin-bottom: 12px;
+            padding-bottom: 6px;
+            border-bottom: 2px solid #e5e7eb;
         }
-        p, li {
+        p {
             font-size: 15px;
+            margin-bottom: 12px;
         }
         a {
             color: #3b82f6;
+            text-decoration: none;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+        .contact-card {
+            background: #f0f5ff;
+            border-left: 4px solid #1A4884;
+            border-radius: 8px;
+            padding: 16px 20px;
+            margin-top: 8px;
+        }
+        .contact-card p {
+            margin-bottom: 0;
         }
         .faq {
-            margin-bottom: 24px;
+            background: #f9fafb;
+            border-radius: 10px;
+            padding: 16px 20px;
+            margin-bottom: 12px;
+        }
+        .faq strong {
+            display: block;
+            color: #1A4884;
+            font-size: 15px;
+            margin-bottom: 4px;
         }
         .faq p {
-            margin-top: 4px;
+            margin-bottom: 0;
+            color: #4b5563;
+            font-size: 14px;
+        }
+        .footer {
+            text-align: center;
+            padding: 24px;
+            font-size: 13px;
+        }
+        .footer a {
+            color: rgba(255, 255, 255, 0.5);
+            text-decoration: none;
+            margin: 0 8px;
+        }
+        .footer a:hover {
+            color: rgba(255, 255, 255, 0.8);
+            text-decoration: none;
         }
     </style>
 </head>
 <body>
-    <h1>B-Ball Subs - Support</h1>
-
-    <p>Thanks for using B-Ball Subs! If you need help or have a question, you're in the right place.</p>
-
-    <h2>Contact Us</h2>
-    <p>For support enquiries, feedback, or feature requests, please use our <a href="https://docs.google.com/forms/d/e/1FAIpQLSfTTZyCj41-IW5OGvwzrK_v3dZcMRpraqVkoWm-j_uJyfzOlg/viewform?usp=publish-editor">feedback form</a>.</p>
-
-    <h2>Frequently Asked Questions</h2>
-
-    <div class="faq">
-        <strong>How many players can I add?</strong>
-        <p>You can add up to 10 players. A minimum of 5 players is required to generate substitutions.</p>
+    <div class="header">
+        <a href="index.html">
+            <img src="adaptive-icon.png" alt="B-Ball Subs">
+            <span>B-Ball Subs</span>
+        </a>
     </div>
 
-    <div class="faq">
-        <strong>What game format does the app use?</strong>
-        <p>The app assumes a 40-minute game with two 20-minute halves and 5 players on court at a time.</p>
+    <div class="content">
+        <h1>Support</h1>
+        <p>Thanks for using B-Ball Subs! If you need help or have a question, you're in the right place.</p>
+
+        <h2>Contact Us</h2>
+        <div class="contact-card">
+            <p>For support enquiries, feedback, or feature requests, please use our <a href="https://docs.google.com/forms/d/e/1FAIpQLSfTTZyCj41-IW5OGvwzrK_v3dZcMRpraqVkoWm-j_uJyfzOlg/viewform?usp=publish-editor">feedback form</a>.</p>
+        </div>
+
+        <h2>Frequently Asked Questions</h2>
+
+        <div class="faq">
+            <strong>How many players can I add?</strong>
+            <p>You can add up to 10 players. A minimum of 5 players is required to generate substitutions.</p>
+        </div>
+
+        <div class="faq">
+            <strong>What game format does the app use?</strong>
+            <p>The app assumes a 40-minute game with two 20-minute halves and 5 players on court at a time.</p>
+        </div>
+
+        <div class="faq">
+            <strong>How is playtime calculated?</strong>
+            <p>The algorithm distributes court time as evenly as possible across all active players. Each player gets roughly the same total minutes.</p>
+        </div>
+
+        <div class="faq">
+            <strong>Are my players saved?</strong>
+            <p>Yes. Your roster is saved locally on your device and will be there when you reopen the app. No account or sign-up is needed.</p>
+        </div>
+
+        <div class="faq">
+            <strong>Does the app collect my data?</strong>
+            <p>No personal data is collected. All player data stays on your device. See our <a href="privacy-policy.html">Privacy Policy</a> for details.</p>
+        </div>
+
+        <div class="faq">
+            <strong>How do I clear my roster and start fresh?</strong>
+            <p>Remove players one at a time using the remove button next to each name, or clear the app's data from your device settings.</p>
+        </div>
+
+        <div class="faq">
+            <strong>The app isn't working properly. What should I do?</strong>
+            <p>Try closing and reopening the app. If the issue persists, please let us know via the <a href="https://docs.google.com/forms/d/e/1FAIpQLSfTTZyCj41-IW5OGvwzrK_v3dZcMRpraqVkoWm-j_uJyfzOlg/viewform?usp=publish-editor">feedback form</a> with a description of the problem.</p>
+        </div>
     </div>
 
-    <div class="faq">
-        <strong>How is playtime calculated?</strong>
-        <p>The algorithm distributes court time as evenly as possible across all active players. Each player gets roughly the same total minutes.</p>
-    </div>
-
-    <div class="faq">
-        <strong>Are my players saved?</strong>
-        <p>Yes. Your roster is saved locally on your device and will be there when you reopen the app. No account or sign-up is needed.</p>
-    </div>
-
-    <div class="faq">
-        <strong>Does the app collect my data?</strong>
-        <p>No personal data is collected. All player data stays on your device. See our <a href="https://tallday.github.io/basketball-sub-planner/privacy-policy.html">Privacy Policy</a> for details.</p>
-    </div>
-
-    <div class="faq">
-        <strong>How do I clear my roster and start fresh?</strong>
-        <p>Remove players one at a time using the remove button next to each name, or clear the app's data from your device settings.</p>
-    </div>
-
-    <div class="faq">
-        <strong>The app isn't working properly. What should I do?</strong>
-        <p>Try closing and reopening the app. If the issue persists, please let us know via the <a href="https://docs.google.com/forms/d/e/1FAIpQLSfTTZyCj41-IW5OGvwzrK_v3dZcMRpraqVkoWm-j_uJyfzOlg/viewform?usp=publish-editor">feedback form</a> with a description of the problem.</p>
+    <div class="footer">
+        <a href="index.html">Home</a>
+        <a href="privacy-policy.html">Privacy Policy</a>
     </div>
 </body>
 </html>
